@@ -1,23 +1,21 @@
+import './App.css';
 import { Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout/Layout";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Signup from "./pages/Auth/Signup";
-import PageNotFound from "./pages/PageNotFound";
-import Signin from "./pages/Auth/Signin";
+import { Signup } from './pages/Signup.jsx';
+import { Signin } from './pages/Signin.jsx';
+import Home from './pages/Home.jsx';
+import { Dashboard } from './pages/Dashboard.jsx';
 function App() {
+
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path="" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/signin" element={<Signin />} />
-        {/* <Route path="/about" element={<About />} /> */}
-        <Route path="*" element={<PageNotFound />} />
-      </Route>
-    </Routes>
+    <>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/signin' element={<Signin />} />
+        <Route path='/dashboard' element={<Dashboard />} />
+      </Routes>
+    </>
   )
 }
 
-export default App
+export default App;

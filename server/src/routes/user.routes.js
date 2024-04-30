@@ -5,12 +5,12 @@ import { upload } from "../middlewares/multer.middleware.js";
 const router = Router();
 
 router.route("/signup").post(
-    upload.fields([
-        {
-            name: "profile",
-            maxCount: 1
-        }
-    ]),
+    // upload.fields([
+    //     {
+    //         name: "profile",
+    //         maxCount: 1
+    //     }
+    // ]),
     signup
 );
 

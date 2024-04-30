@@ -15,6 +15,12 @@ app.use(cors({
 // console.log("Forntend URI", process.env.FRONTEND_URI);
 app.use(morgan("dev"))
 
+app.get("/", (_req, res) => {
+    res.json({
+        message: "Hello"
+    })
+})
+
 app.use(express.json({ limit: "16kb" }))
 app.use(express.urlencoded({ // To make understand express the encoded url
     limit: "16kb", extended: true
