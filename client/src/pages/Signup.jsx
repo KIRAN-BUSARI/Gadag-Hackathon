@@ -12,10 +12,12 @@ import { ImEye, ImEyeBlocked } from "react-icons/im"
 import axiosInstance from "../axiosInstance"
 
 export const Signup = () => {
-  // const [username, setUsername] = useState("");
-  // const [email, setemail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [profile, setProfile] = useState("");
+  const [email, setemail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
   const [previewImage, setImagePreview] = useState("");
@@ -28,22 +30,22 @@ export const Signup = () => {
   const handleCpass = () => {
     setCpass(!cpass);
   }
-  const [signupData, setSignupData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [profile, setProfile] = useState("");
+  // const [signupData, setSignupData] = useState({
+  //   firstName: "",
+  //   lastName: "",
+  //   email: "",
+  //   password: "",
+  //   confirmPassword: "",
+  //   profile: ""
+  // });
 
-  const handleUserInput = (event) => {
-    const { name, value } = event.target;
-    setSignupData({
-      ...signupData,
-      [name]: value,
-    });
-  };
+  // const handleUserInput = (event) => {
+  //   const { name, value } = event.target;
+  //   setSignupData({
+  //     ...signupData,
+  //     [name]: value,
+  //   });
+  // };
 
   const getImage = (event) => {
     event.preventDefault();
@@ -52,12 +54,8 @@ export const Signup = () => {
     console.log(uploadedImage);
     // if image exists then getting the url link of it
     if (uploadedImage) {
-      // setSignupData({
-      //   ...signupData,
-      //   profile: uploadedImage
-      // });
       setProfile(uploadedImage)
-      // console.log(setProfile);
+      console.log(uploadedImage);
       const fileReader = new FileReader();
       fileReader.readAsDataURL(uploadedImage);
       fileReader.addEventListener("load", function () {
@@ -90,12 +88,12 @@ export const Signup = () => {
           name="image_uploads"
           accept=".jpg, .jpeg, .png"
         />
-        <InputBox onChange={handleUserInput} name="firstName" value={signupData.firstName} placeholder="John" label={"First Name"} />
-        <InputBox onChange={handleUserInput} name="lastName" value={signupData.lastName} placeholder="vencob" label={"Last Name"} />
-        <InputBox onChange={handleUserInput} name="email" value={signupData.email} placeholder="Test@gmail.com" label={"Email"} />
+        <InputBox name="firstName" placeholder="John" label={"First Name"} onChange={e => { setFirstName(e.target.value) }} />
+        <InputBox name="lastName" placeholder="vencob" label={"Last Name"} onChange={e => { setLastName(e.target.value) }} />
+        <InputBox name="email" placeholder="Test@gmail.com" label={"Email"} onChange={e => { setemail(e.target.value) }} />
 
         <div className="flex items-center">
-          <PasswordInputBox name="password" type={pass ? "password" : "text"} onChange={handleUserInput} placeholder="........" label={"Password"} value={signupData.password} />
+          <PasswordInputBox name="password" type={pass ? "password" : "text"} placeholder="........" label={"Password"} onChange={e => { setPassword(e.target.value) }} />
           <div className="-ml-7 cursor-pointer">
             {pass ? (
               <ImEye onClick={handlePass} />
@@ -105,7 +103,7 @@ export const Signup = () => {
           </div>
         </div>
         <div className="flex items-center">
-          <PasswordInputBox name="confirmPassword" type={cpass ? "password" : "text"} onChange={handleUserInput} value={signupData.confirmPassword} placeholder="........" label={"Confirm Password"} />
+          <PasswordInputBox name="confirmPassword" type={cpass ? "password" : "text"} placeholder="........" label={"Confirm Password"} onChange={e => { setConfirmPassword(e.target.value) }} />
           <div className="-ml-7 cursor-pointer">
             {cpass ? (
               <ImEye onClick={handleCpass} />
@@ -116,15 +114,34 @@ export const Signup = () => {
         </div>
         <div className="pt-4">
           <Button onClick={async () => {
-            let response = axiosInstance.post("/users/signup", signupData)
-            await toast.promise(response, {
-              loading: "Creating the user.....",
-              success: "User Signup successfully..!🥳",
-              error: "Error creating user..."
-            })
-            response = await response
-            localStorage.setItem("accessToken", response.data.accessToken)
-            navigate("/dashboard")
+            try {
+              const formDataToSend = new FormData();
+              formDataToSend.append('firstName', firstName);
+              formDataToSend.append('lastName', lastName);
+              formDataToSend.append('email', email);
+              formDataToSend.append('password', password);
+              formDataToSend.append('confirmPassword', confirmPassword);
+              formDataToSend.append('profile', profile);
+
+              let response = axiosInstance.post("/users/signup", formDataToSend, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              });
+
+              toast.promise(response, {
+                loading: "Creating the user.....⏳",
+                success: "User Signup successfully..!✅",
+                error: "Error creating user...❌"
+              });
+
+              response = await response
+
+              localStorage.setItem("accessToken", response.data.accessToken);
+              navigate("/dashboard");
+            } catch (error) {
+              console.error("Signup Error:", error);
+            }
           }} label={"Sign up"} />
         </div>
         <BottomWarning label={"Already have an account?"} buttonText={"Sign in"} to={"/signin"} />

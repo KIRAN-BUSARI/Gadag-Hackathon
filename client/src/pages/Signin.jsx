@@ -27,9 +27,9 @@ export const Signin = () => {
                                 password
                             })
                             await toast.promise(res, {
-                                loading: "Signing in.....",
-                                success: "Signed in successfully..!🥳",
-                                error: "Error signing in..."
+                                loading: "Signing in.....⏳",
+                                success: "Signed in successfully....!✅",
+                                error: "Error signing in....❌"
                             })
                             res = await res
                             // console.log(res.data);

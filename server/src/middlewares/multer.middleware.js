@@ -2,7 +2,7 @@ import multer from "multer";
 // Read the documentaion from https://github.com/expressjs/multer
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination: function (_req, file, cb) {
         cb(null, "./public/temp");
     },
     filename: function (_req, file, cb) {

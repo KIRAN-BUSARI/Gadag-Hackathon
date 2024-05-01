@@ -30,19 +30,19 @@ const generateAccessAndrefreshToken = async (userId) => {
 }
 
 const signup = asyncHandler(async (req, res) => {
-    // const signupSchema = zod.object({
-    //     firstName: zod.string(),
-    //     lastName: zod.string(),
-    //     email: zod.string().email(),
-    //     password: zod.string().min(1),
-    //     confirmPassword: zod.string().min(1)
-    // })
+    const signupSchema = zod.object({
+        firstName: zod.string(),
+        lastName: zod.string(),
+        email: zod.string().email(),
+        password: zod.string().min(1),
+        confirmPassword: zod.string().min(1)
+    })
     const { firstName, lastName, email, password, confirmPassword } = req.body;
-    // const validSchema = signupSchema.safeParse(req.body);
+    const validSchema = signupSchema.safeParse(req.body);
 
-    // if (!validSchema.success) {
-    //     throw new ApiError(400, "All Fields are required", validSchema.error)
-    // }
+    if (!validSchema.success) {
+        throw new ApiError(400, "All Fields are required", validSchema.error)
+    }
 
     const existingUser = await User.findOne({ email })
     // console.log("user", existingUser);
@@ -51,14 +51,14 @@ const signup = asyncHandler(async (req, res) => {
         throw new ApiError(400, "User already exists")
     }
 
-    // const profileLocalPath = req.files?.profile[0]?.path;
-    // // console.log(profileLocalPath);
-    // if (!profileLocalPath) {
-    //     throw new ApiError(400, "Profile file is required")
-    // }
+    const profileLocalPath = req.files?.profile[0]?.path;
+    console.log("LocalPath", profileLocalPath);
+    if (!profileLocalPath) {
+        throw new ApiError(400, "Profile file is required")
+    }
 
-    // const profile = await uploadOnCloudinary(profileLocalPath)
-    // console.log("Profile :", profile);
+    const profile = await uploadOnCloudinary(profileLocalPath)
+    console.log("Profile :", profile);
 
     if (password !== confirmPassword) {
         throw new ApiError(400, "Passwords do not match")
@@ -67,7 +67,7 @@ const signup = asyncHandler(async (req, res) => {
     const newUser = await User.create({
         firstName,
         lastName,
-        // profile: profile.url,
+        profile: profile.url,
         email,
         password
     })
