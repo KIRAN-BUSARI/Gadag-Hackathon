@@ -29,8 +29,9 @@ app.use(express.static("public")) // To store any public assests in server (Temp
 app.use(cookieParser());
 // Routes
 import userRouter from "./routes/user.routes.js";
-
+import detectRouter from "./routes/detect.routes.js";
 // Declaring Routes
 app.use("/api/v1/users", userRouter)
 
+app.use("/api/v1", detectRouter)
 export { app }

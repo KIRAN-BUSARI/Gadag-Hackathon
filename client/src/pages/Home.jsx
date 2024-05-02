@@ -1,18 +1,27 @@
-import { Link } from "react-router-dom"
-import { Appbar } from "../components/Appbar"
 
 function Home() {
     return (
         <>
-            <Appbar />
-            <div className="h-[90vh] bg-black flex flex-col justify-center items-center">
-                <h1 className="text-5xl text-[#0095ff]">Welcome</h1>
-                <p className="text-3xl ">PayPulse</p>
-                <div className="flex">
-                    <Link to={"/signup"} className="border px-4 py-2 mt-4 mr-3 bg-gray-400 rounded-lg">Signup</Link>
-                    <Link to={"/signin"} className="border px-4 py-2 mt-4 bg-gray-400 rounded-lg">Signin</Link>
+            <div className="h-[90vh] bg-white justify-center items-center max-w-7xl gap-4 mx-auto grid grid-cols-3">
+                <div className="border border-black px-3 py-4 rounded-md">
+                    <img src="/magnify.png" alt="" className="object-cover" />
+                    <div className="text-center text-black">
+                        <button onClick={() => window.location.href = "/detection"}>Object Detection</button>
+                    </div>
                 </div>
-            </div>
+                <div className="border border-black px-3 py-4 rounded-md">
+                    <img src="/magnify.png" alt="" className="object-cover" />
+                    <div className="text-center text-black">
+                        <button onClick={() => window.location.href = "/image-classification"}>Image Classificatoin</button>
+                    </div>
+                </div>
+                <div className="border border-black px-3 py-4 rounded-md">
+                    <img src="/magnify.png" alt="" className="object-cover" />
+                    <div className="text-center text-black">
+                        <button onClick={() => window.location.href = "/detection"}></button>
+                    </div>
+                </div>
+            </div >
         </>
     )
 }
